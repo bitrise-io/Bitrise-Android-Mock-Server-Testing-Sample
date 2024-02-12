@@ -4,7 +4,7 @@ This is a sample Android project that demonstrates the usage of service containe
 
 ## Architecture
 
-The CatFacts app displays random facts about cats. Data is fetched from the awesome [Cat Facts REST API](https://catfact.ninja/) using Retrofit. The UI is created using Compose and a standard Jetpack ViewModel. UI state is handled as a Kotlin Flow.
+The CatFacts app displays random facts about cats. Data is fetched from the awesome [Cat Facts REST API](https://catfact.ninja/) using Retrofit ([jump to code](https://github.com/bitrise-io/Bitrise-Android-Mock-Server-Testing-Sample/blob/9f8b9e0e674724daa11a3ef6336ece8be4b09d16/app/src/main/java/io/bitrise/sample/android/mockserver/data/CatFactService.kt#L5)). The UI is created using Compose ([jump to code](https://github.com/bitrise-io/Bitrise-Android-Mock-Server-Testing-Sample/blob/9f8b9e0e674724daa11a3ef6336ece8be4b09d16/app/src/main/java/io/bitrise/sample/android/mockserver/ui/catfacts/CatFacts.kt#L25)) and a standard Jetpack ViewModel ([jump to code](https://github.com/bitrise-io/Bitrise-Android-Mock-Server-Testing-Sample/blob/9f8b9e0e674724daa11a3ef6336ece8be4b09d16/app/src/main/java/io/bitrise/sample/android/mockserver/ui/catfacts/CatFactsViewModel.kt)). UI state is handled as a Kotlin Flow.
 
 https://github.com/bitrise-io/Bitrise-Android-Mock-Server-Testing-Sample/assets/1694986/66feaeff-d7c3-4bbb-8ec9-df404a5de8f0
 
@@ -13,7 +13,9 @@ https://github.com/bitrise-io/Bitrise-Android-Mock-Server-Testing-Sample/assets/
 
 When writing integration or smoke tests, it's often required to swap the production API endpoint with an alternate endpoint or a mocked one.
 
-Service containers help with the latter: you can spin up an entire API service from a single Docker image that runs on `localhost` next to the tests in CI. This has several benefits:
+We are going to demonstrate this by mocking the Cat Facts API to return a robot fact 🤖. After all, testing a feature that displays random information is not easy.
+
+Bitrise service containers help with this: we can spin up an entire API service from a single Docker image that runs on `localhost` next to the tests in CI. This has several benefits:
 
 - Eliminates network latency and flakiness in tests
 - Tests become more deterministic as they no longer depend on the API not changing suddenly. The mocked server behavior is defined next to the test code.
@@ -26,7 +28,7 @@ On a high level, the testing workflow looks like this:
 - Run unit tests, connecting to `localhost` instead of the prod endpoint
 - Run instrumented tests, connecting to `localhost` instead of the prod endpoint
 
-This is how the workflow is defined in `bitrise.yml`:
+This is how the workflow is defined in [bitrise.yml](bitrise.yml):
 
 ```yml
 tests:
@@ -73,7 +75,7 @@ It does the following:
 - Mocks the `GET /health` endpoint by returning `200 OK` (more on this later)
 
 > [!NOTE]
-> Service containers with volume mounts are not supported at the moment. We work around this by building a three-line Dockerfile that copies the mock config into the image:
+> Service containers with volume mounts are not supported at the moment. We work around this by building a three-line [Dockerfile](test_server/Dockerfile) that copies the mock config into the image:
 
 ```
 FROM mockoon/cli:latest
@@ -102,7 +104,7 @@ steps:
 
 Because the service container with our mock API is launched before the testing workflow, we can write tests that connect to `localhost` instead of the production endpoint.
 
-This is how an instrumented test looks like:
+This is how an [instrumented test](app/src/androidTest/java/io/bitrise/sample/android/mockserver/CatFactTest.kt) looks like:
 
 ```kotlin
 class CatFactTest {
@@ -136,7 +138,7 @@ class CatFactTest {
 }
 ```
 
-And this is how a unit test would look like, running on JVM:
+And this is how [a unit test](app/src/test/java/io/bitrise/sample/android/mockserver/CatFactsViewModelTest.kt) would look like, running on JVM:
 
 ```kotlin
 class CatFactsViewModelTest {
