@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Cat Facts</string>
+    <string name="cat_fact_load_error">Failed to load fact. Please try again</string>
+</resources>

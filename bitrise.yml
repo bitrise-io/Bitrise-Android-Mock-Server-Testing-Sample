@@ -1,0 +1,49 @@
+format_version: "13"
+default_step_lib_source: 'https://github.com/bitrise-io/bitrise-steplib.git'
+workflows:
+  _checkout:
+    steps:
+      - git-clone@8: { }
+  _build-mock-api-image:
+    description: |
+      Builds a Docker image of the mock API server (preconfigured with the correct routes).
+      This is used when launching the service containers of other workflows.
+    steps:
+      - docker-build-push:
+          inputs:
+            - tags: test_server:latest
+            - context: test_server
+            - file: test_server/Dockerfile
+            - push: "false"
+            - extra_options: --platform=linux/amd64
+  tests:
+    before_run:
+      - _checkout
+      - _build-mock-api-image
+    services:
+      mocked-test-server:
+        image: test_server:latest
+        ports:
+          - 3001:3001
+        # Healthcheck makes sure that the service is up and running before the tests start
+        options: >-
+          --health-cmd "curl http://localhost:3001/health"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - android-unit-test@1:
+          inputs:
+            - module: app
+            - variant: debug
+      - avd-manager@1:
+          title: Boot emulator
+          inputs:
+            - api_level: 26
+            - tag: default
+      - wait-for-android-emulator@1: {}
+      - gradle-runner@1:
+          title: Run instrumented tests
+          inputs:
+            - gradle_task: ":app:connectedDebugAndroidTest"
+            - gradlew_path: "$BITRISE_SOURCE_DIR/gradlew"

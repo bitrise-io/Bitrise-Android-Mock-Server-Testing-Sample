@@ -1,0 +1,137 @@
+{
+  "uuid": "faf1156c-56f5-4c47-b62a-a0dfc949d639",
+  "lastMigration": 32,
+  "name": "Cat Facts API",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3001,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "24e72cd4-4ebe-450b-aa83-67fb5e762771",
+      "type": "http",
+      "documentation": "Get Random Fact",
+      "method": "get",
+      "endpoint": "fact",
+      "responses": [
+        {
+          "uuid": "c138904a-33ec-4f1d-8f99-97e3fce5421a",
+          "body": "{\n  \"fact\": \"In 1997, NASA's Mars Pathfinder mission delivered a robotic rover named Sojourner to the surface of Mars. This marked the first time a mobile robot roamed another planet, paving the way for future exploration rovers like Spirit, Opportunity, Curiosity, and Perseverance.\",\n  \"length\": {{faker 'number.int' max=99999}}\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "successful operation",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "86f4e5e3-add9-4e16-a56b-60bcd90e7391",
+          "body": "",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "Fact not found",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "e6a88f73-fa17-4128-a143-8a83fb8361b6",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "health",
+      "responses": [
+        {
+          "uuid": "19a41d96-c845-41cd-b531-70e4baf39297",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "24e72cd4-4ebe-450b-aa83-67fb5e762771"
+    },
+    {
+      "type": "route",
+      "uuid": "e6a88f73-fa17-4128-a143-8a83fb8361b6"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}
