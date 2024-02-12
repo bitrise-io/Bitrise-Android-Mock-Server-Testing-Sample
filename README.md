@@ -138,6 +138,9 @@ class CatFactTest {
 }
 ```
 
+> [!NOTE]
+> The mock server doesn't handle HTTPS traffic. Cleartext (HTTP) traffic is blocked by default in Android apps, so we added an exception [here](app/src/main/res/xml/network_security_config.xml).
+
 And this is how [a unit test](app/src/test/java/io/bitrise/sample/android/mockserver/CatFactsViewModelTest.kt) would look like, running on JVM:
 
 ```kotlin
