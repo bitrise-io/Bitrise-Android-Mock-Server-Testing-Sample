@@ -6,7 +6,8 @@ This is a sample Android project that demonstrates the usage of service containe
 
 The CatFacts app displays random facts about cats. Data is fetched from the awesome [Cat Facts REST API](https://catfact.ninja/) using Retrofit. The UI is created using Compose and a standard Jetpack ViewModel. UI state is handled as a Kotlin Flow.
 
-![Demo screen recording](docs/demo.mp4)
+https://github.com/bitrise-io/Bitrise-Android-Mock-Server-Testing-Sample/assets/1694986/66feaeff-d7c3-4bbb-8ec9-df404a5de8f0
+
 
 ## Testing setup
 
